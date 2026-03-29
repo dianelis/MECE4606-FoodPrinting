@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="390.0" height="382.0" viewBox="0 0 390.0 382.0">
+  <rect width="100%" height="100%" fill="#FFFFFF"/>
+  <title>G-code Toolpath</title>
+  <g id="travel" stroke="#94A3B8" stroke-width="0.90" stroke-dasharray="4,3" fill="none" opacity="0.5">
+    <line x1="15.00" y1="366.96" x2="375.00" y2="66.96"/>
+    <line x1="375.00" y1="66.96" x2="364.84" y2="53.61"/>
+    <line x1="364.84" y1="53.61" x2="352.41" y2="45.36"/>
+    <line x1="352.41" y1="45.36" x2="339.61" y2="42.36"/>
+    <line x1="339.61" y1="42.36" x2="328.20" y2="44.10"/>
+    <line x1="328.20" y1="44.10" x2="319.66" y2="49.57"/>
+    <line x1="319.66" y1="49.57" x2="15.00" y2="366.96"/>
+  </g>
+  <g id="layer-0" stroke="#2563EB" stroke-width="1.50" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <line x1="375.00" y1="66.96" x2="285.00" y2="15.00"/>
+    <line x1="285.00" y1="15.00" x2="285.00" y2="118.93"/>
+    <line x1="285.00" y1="118.93" x2="375.00" y2="66.96"/>
+  </g>
+  <g id="layer-1" stroke="#DC2626" stroke-width="1.50" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <line x1="375.00" y1="66.96" x2="285.00" y2="15.00"/>
+    <line x1="285.00" y1="15.00" x2="285.00" y2="118.93"/>
+    <line x1="285.00" y1="118.93" x2="375.00" y2="66.96"/>
+  </g>
+  <g id="layer-2" stroke="#16A34A" stroke-width="1.50" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <line x1="364.84" y1="53.61" x2="278.51" y2="30.48"/>
+    <line x1="278.51" y1="30.48" x2="301.64" y2="116.81"/>
+    <line x1="301.64" y1="116.81" x2="364.84" y2="53.61"/>
+  </g>
+  <g id="layer-3" stroke="#D97706" stroke-width="1.50" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <line x1="364.84" y1="53.61" x2="278.51" y2="30.48"/>
+    <line x1="278.51" y1="30.48" x2="301.64" y2="116.81"/>
+    <line x1="301.64" y1="116.81" x2="364.84" y2="53.61"/>
+  </g>
+  <g id="layer-4" stroke="#9333EA" stroke-width="1.50" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <line x1="352.41" y1="45.36" x2="277.59" y2="45.36"/>
+    <line x1="277.59" y1="45.36" x2="315.00" y2="110.16"/>
+    <line x1="315.00" y1="110.16" x2="352.41" y2="45.36"/>
+  </g>
+  <g id="layer-5" stroke="#0891B2" stroke-width="1.50" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <line x1="352.41" y1="45.36" x2="277.59" y2="45.36"/>
+    <line x1="277.59" y1="45.36" x2="315.00" y2="110.16"/>
+    <line x1="315.00" y1="110.16" x2="352.41" y2="45.36"/>
+  </g>
+  <g id="layer-6" stroke="#E11D48" stroke-width="1.50" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <line x1="339.61" y1="42.36" x2="281.38" y2="57.96"/>
+    <line x1="281.38" y1="57.96" x2="324.01" y2="100.58"/>
+    <line x1="324.01" y1="100.58" x2="339.61" y2="42.36"/>
+  </g>
+  <g id="layer-7" stroke="#4F46E5" stroke-width="1.50" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <line x1="339.61" y1="42.36" x2="281.38" y2="57.96"/>
+    <line x1="281.38" y1="57.96" x2="324.01" y2="100.58"/>
+    <line x1="324.01" y1="100.58" x2="339.61" y2="42.36"/>
+  </g>
+  <g id="layer-8" stroke="#2563EB" stroke-width="1.50" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <line x1="328.20" y1="44.10" x2="288.60" y2="66.96"/>
+    <line x1="288.60" y1="66.96" x2="328.20" y2="89.83"/>
+    <line x1="328.20" y1="89.83" x2="328.20" y2="44.10"/>
+  </g>
+  <g id="layer-9" stroke="#DC2626" stroke-width="1.50" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <line x1="328.20" y1="44.10" x2="288.60" y2="66.96"/>
+    <line x1="288.60" y1="66.96" x2="328.20" y2="89.83"/>
+    <line x1="328.20" y1="89.83" x2="328.20" y2="44.10"/>
+  </g>
+  <g id="layer-10" stroke="#16A34A" stroke-width="1.50" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <line x1="319.66" y1="49.57" x2="297.61" y2="71.62"/>
+    <line x1="297.61" y1="71.62" x2="327.73" y2="79.69"/>
+    <line x1="327.73" y1="79.69" x2="319.66" y2="49.57"/>
+  </g>
+  <g id="layer-11" stroke="#D97706" stroke-width="1.50" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <line x1="319.66" y1="49.57" x2="297.61" y2="71.62"/>
+    <line x1="297.61" y1="71.62" x2="327.73" y2="79.69"/>
+    <line x1="327.73" y1="79.69" x2="319.66" y2="49.57"/>
+  </g>
+  <circle cx="375.00" cy="66.96" r="3.0" fill="#16A34A" opacity="0.8"/>  <!-- start -->
+  <circle cx="319.66" cy="49.57" r="3.0" fill="#DC2626" opacity="0.8"/>  <!-- end -->
+</svg>
