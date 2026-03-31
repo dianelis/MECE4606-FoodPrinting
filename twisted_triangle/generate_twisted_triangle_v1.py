@@ -37,10 +37,10 @@ CENTER_Y         = 100.0
 
 # Print parameters (tuned for peanut butter / stiff paste)
 LAYER_HEIGHT     = 2.0       # mm per layer
-FIRST_LAYER_Z    = 2.0       # Z of the very first layer
+FIRST_LAYER_Z    = 9.0       # Z of the very first layer (raised for bed clearance)
 PRINT_SPEED      = 300       # mm/min for extrusion moves
 TRAVEL_SPEED     = 1200      # mm/min for non-extrusion moves
-EXTRUSION_MULT   = 0.12      # E mm per mm of XY travel
+EXTRUSION_MULT   = 0.06      # E mm per mm of XY travel (reduced for thinner lines)
 RETRACT_DIST     = 1.5       # retraction to reduce ooze between layers
 Z_HOP            = 1.0       # Z hop during travel moves
 
@@ -262,7 +262,7 @@ examples:
         out_path = args.output
     else:
         script_dir = os.path.dirname(os.path.abspath(__file__))
-        out_path = os.path.join(script_dir, "di2256_twisted_triangle.gcode")
+        out_path = os.path.join(script_dir, "di2256_twisted_triangle_v1.gcode")
 
     with open(out_path, "w") as f:
         f.write(gcode)
