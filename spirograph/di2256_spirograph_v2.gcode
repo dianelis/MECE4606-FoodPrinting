@@ -13,7 +13,7 @@
 ; Layers: 3
 ; Rings per layer: 3
 ; Layer height: 2.0mm
-; Total height: 6.0mm
+; Total height: 7.0mm
 ; Twist per layer: 12.0° (total: 24.0°)
 ; Print speed: 300 mm/min
 ; Center: (100, 100)
@@ -26,15 +26,15 @@ G28              ; Home all axes
 
 
 ; ╔══════════════════════════════════════════════╗
-; ║  LAYER 1/3 (Z=2.0mm, θ=0.0°)             ║
+; ║  LAYER 1/3 (Z=3.0mm, θ=0.0°)             ║
 ; ╚══════════════════════════════════════════════╝
 
 ; >>> SYRINGE: Material A — Cream Cheese + blue dye (teal) <<<
 
 ; --- outer ring (scale 100%, Material A) ---
-G1 Z3.00 F600   ; Z-hop
+G1 Z4.00 F600   ; Z-hop
 G1 X126.000 Y100.000 F1200   ; Travel to outer start
-G1 Z2.00 F300   ; Lower to layer height
+G1 Z3.00 F300   ; Lower to layer height
 G1 X125.978 Y100.210 E0.0211 F300
 G1 X125.912 Y100.419 E0.0431 F300
 G1 X125.803 Y100.630 E0.0668 F300
@@ -402,9 +402,9 @@ G1 E23.7104 F1200   ; Retract
 M0               ; Pause for syringe swap
 
 ; --- middle ring (scale 68%, Material B) ---
-G1 Z3.00 F600   ; Z-hop
+G1 Z4.00 F600   ; Z-hop
 G1 X117.680 Y100.000 F1200   ; Travel to middle start
-G1 Z2.00 F300   ; Lower to layer height
+G1 Z3.00 F300   ; Lower to layer height
 G1 E25.2104 F1200   ; Prime
 G1 X117.665 Y100.142 E25.2248 F300
 G1 X117.620 Y100.285 E25.2397 F300
@@ -773,9 +773,9 @@ G1 E40.8535 F1200   ; Retract
 M0               ; Pause for syringe swap
 
 ; --- inner ring (scale 40%, Material C) ---
-G1 Z3.00 F600   ; Z-hop
+G1 Z4.00 F600   ; Z-hop
 G1 X110.400 Y100.000 F1200   ; Travel to inner start
-G1 Z2.00 F300   ; Lower to layer height
+G1 Z3.00 F300   ; Lower to layer height
 G1 E42.3535 F1200   ; Prime
 G1 X110.391 Y100.084 E42.3620 F300
 G1 X110.365 Y100.168 E42.3708 F300
@@ -1140,7 +1140,7 @@ G1 X110.400 Y100.000 E52.4377 F300
 G1 E50.9377 F1200   ; Retract
 
 ; ╔══════════════════════════════════════════════╗
-; ║  LAYER 2/3 (Z=4.0mm, θ=12.0°)             ║
+; ║  LAYER 2/3 (Z=5.0mm, θ=12.0°)             ║
 ; ╚══════════════════════════════════════════════╝
 
 ; *** MATERIAL SWITCH → A ***
@@ -1148,9 +1148,9 @@ G1 E50.9377 F1200   ; Retract
 M0               ; Pause for syringe swap
 
 ; --- outer ring (scale 100%, Material A) ---
-G1 Z5.00 F600   ; Z-hop
+G1 Z6.00 F600   ; Z-hop
 G1 X125.432 Y105.406 F1200   ; Travel to outer start
-G1 Z4.00 F300   ; Lower to layer height
+G1 Z5.00 F300   ; Lower to layer height
 G1 E52.4377 F1200   ; Prime
 G1 X125.367 Y105.606 E52.4588 F300
 G1 X125.259 Y105.798 E52.4808 F300
@@ -1519,9 +1519,9 @@ G1 E76.1481 F1200   ; Retract
 M0               ; Pause for syringe swap
 
 ; --- middle ring (scale 68%, Material B) ---
-G1 Z5.00 F600   ; Z-hop
+G1 Z6.00 F600   ; Z-hop
 G1 X117.294 Y103.676 F1200   ; Travel to middle start
-G1 Z4.00 F300   ; Lower to layer height
+G1 Z5.00 F300   ; Lower to layer height
 G1 E77.6481 F1200   ; Prime
 G1 X117.249 Y103.812 E77.6625 F300
 G1 X117.176 Y103.942 E77.6774 F300
@@ -1890,9 +1890,9 @@ G1 E93.2912 F1200   ; Retract
 M0               ; Pause for syringe swap
 
 ; --- inner ring (scale 40%, Material C) ---
-G1 Z5.00 F600   ; Z-hop
+G1 Z6.00 F600   ; Z-hop
 G1 X110.173 Y102.162 F1200   ; Travel to inner start
-G1 Z4.00 F300   ; Lower to layer height
+G1 Z5.00 F300   ; Lower to layer height
 G1 E94.7912 F1200   ; Prime
 G1 X110.147 Y102.242 E94.7997 F300
 G1 X110.104 Y102.319 E94.8085 F300
@@ -2257,7 +2257,7 @@ G1 X110.173 Y102.162 E104.8754 F300
 G1 E103.3754 F1200   ; Retract
 
 ; ╔══════════════════════════════════════════════╗
-; ║  LAYER 3/3 (Z=6.0mm, θ=24.0°)             ║
+; ║  LAYER 3/3 (Z=7.0mm, θ=24.0°)             ║
 ; ╚══════════════════════════════════════════════╝
 
 ; *** MATERIAL SWITCH → A ***
@@ -2265,9 +2265,9 @@ G1 E103.3754 F1200   ; Retract
 M0               ; Pause for syringe swap
 
 ; --- outer ring (scale 100%, Material A) ---
-G1 Z7.00 F600   ; Z-hop
+G1 Z8.00 F600   ; Z-hop
 G1 X123.752 Y110.575 F1200   ; Travel to outer start
-G1 Z6.00 F300   ; Lower to layer height
+G1 Z7.00 F300   ; Lower to layer height
 G1 E104.8754 F1200   ; Prime
 G1 X123.647 Y110.758 E104.8965 F300
 G1 X123.502 Y110.923 E104.9185 F300
@@ -2636,9 +2636,9 @@ G1 E128.5858 F1200   ; Retract
 M0               ; Pause for syringe swap
 
 ; --- middle ring (scale 68%, Material B) ---
-G1 Z7.00 F600   ; Z-hop
+G1 Z8.00 F600   ; Z-hop
 G1 X116.151 Y107.191 F1200   ; Travel to middle start
-G1 Z6.00 F300   ; Lower to layer height
+G1 Z7.00 F300   ; Lower to layer height
 G1 E130.0858 F1200   ; Prime
 G1 X116.080 Y107.315 E130.1002 F300
 G1 X115.981 Y107.427 E130.1151 F300
@@ -3007,9 +3007,9 @@ G1 E145.7289 F1200   ; Retract
 M0               ; Pause for syringe swap
 
 ; --- inner ring (scale 40%, Material C) ---
-G1 Z7.00 F600   ; Z-hop
+G1 Z8.00 F600   ; Z-hop
 G1 X109.501 Y104.230 F1200   ; Travel to inner start
-G1 Z6.00 F300   ; Lower to layer height
+G1 Z7.00 F300   ; Lower to layer height
 G1 E147.2289 F1200   ; Prime
 G1 X109.459 Y104.303 E147.2374 F300
 G1 X109.401 Y104.369 E147.2462 F300
@@ -3374,7 +3374,7 @@ G1 X109.501 Y104.230 E157.3131 F300
 G1 E155.8131 F1200   ; Retract
 
 ; === FINISH ===
-G1 Z26.0 F600      ; Raise nozzle clear
+G1 Z27.0 F600      ; Raise nozzle clear
 G1 X0 Y0 F1200   ; Move to home
 M84              ; Disable motors
 

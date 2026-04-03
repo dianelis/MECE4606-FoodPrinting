@@ -37,7 +37,7 @@ SCALE_INNER  = 0.40       # ~21mm diameter
 NUM_LAYERS   = 3          # layers (kept small to limit syringe swaps)
 TWIST_LAYER  = 12.0       # degrees to rotate the whole pattern per layer
 LAYER_HEIGHT = 2.0
-FIRST_Z      = 2.0
+FIRST_Z      = 3.0        # matches twisted triangle v2 plate height
 
 # Resolution
 POINTS_PER_REV = 180
