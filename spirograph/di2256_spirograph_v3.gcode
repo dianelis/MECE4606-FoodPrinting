@@ -15,7 +15,7 @@
 ; Layers: 3
 ; Elements per layer: 3 (outer petals + inner petals + center)
 ; Layer height: 2.0mm
-; Total height: 7.0mm
+; Total height: 10.0mm
 ; Twist per layer: 12.0° (total: 24.0°)
 ; Print speed: 300 mm/min
 ; Center: (100, 100)
@@ -28,15 +28,15 @@ G28              ; Home all axes
 
 
 ; ╔══════════════════════════════════════════════╗
-; ║  LAYER 1/3 (Z=3.0mm, θ=0.0°)             ║
+; ║  LAYER 1/3 (Z=6.0mm, θ=0.0°)             ║
 ; ╚══════════════════════════════════════════════╝
 
 ; >>> SYRINGE: Material A — Cream Cheese + blue dye (teal) <<<
 
 ; --- outer petals (Material A) ---
-G1 Z4.00 F600   ; Z-hop
+G1 Z7.00 F600   ; Z-hop
 G1 X126.000 Y100.000 F1200   ; Travel to outer petals start
-G1 Z3.00 F300   ; Lower to layer height
+G1 Z6.00 F300   ; Lower to layer height
 G1 X125.963 Y100.272 E0.0274 F300
 G1 X125.852 Y100.542 E0.0566 F300
 G1 X125.667 Y100.807 E0.0889 F300
@@ -344,9 +344,9 @@ G1 E25.8091 F1200   ; Retract
 M0               ; Pause for syringe swap
 
 ; --- inner petals (Material B) ---
-G1 Z4.00 F600   ; Z-hop
+G1 Z7.00 F600   ; Z-hop
 G1 X112.621 Y109.169 F1200   ; Travel to inner petals start
-G1 Z3.00 F300   ; Lower to layer height
+G1 Z6.00 F300   ; Lower to layer height
 G1 E27.3091 F1200   ; Prime
 G1 X112.507 Y109.288 E27.3256 F300
 G1 X112.358 Y109.380 E27.3431 F300
@@ -655,9 +655,9 @@ G1 E42.1946 F1200   ; Retract
 M0               ; Pause for syringe swap
 
 ; --- center circle (Material C) ---
-G1 Z4.00 F600   ; Z-hop
+G1 Z7.00 F600   ; Z-hop
 G1 X105.000 Y100.000 F1200   ; Travel to center circle start
-G1 Z3.00 F300   ; Lower to layer height
+G1 Z6.00 F300   ; Lower to layer height
 G1 E43.6946 F1200   ; Prime
 G1 X104.993 Y100.262 E43.7207 F300
 G1 X104.973 Y100.523 E43.7469 F300
@@ -782,7 +782,7 @@ G1 X105.000 Y100.000 E46.8358 F300
 G1 E45.3358 F1200   ; Retract
 
 ; ╔══════════════════════════════════════════════╗
-; ║  LAYER 2/3 (Z=5.0mm, θ=12.0°)             ║
+; ║  LAYER 2/3 (Z=8.0mm, θ=12.0°)             ║
 ; ╚══════════════════════════════════════════════╝
 
 ; *** MATERIAL SWITCH → A ***
@@ -790,9 +790,9 @@ G1 E45.3358 F1200   ; Retract
 M0               ; Pause for syringe swap
 
 ; --- outer petals (Material A) ---
-G1 Z6.00 F600   ; Z-hop
+G1 Z9.00 F600   ; Z-hop
 G1 X125.432 Y105.406 F1200   ; Travel to outer petals start
-G1 Z5.00 F300   ; Lower to layer height
+G1 Z8.00 F300   ; Lower to layer height
 G1 E46.8358 F1200   ; Prime
 G1 X125.339 Y105.664 E46.8632 F300
 G1 X125.174 Y105.905 E46.8924 F300
@@ -1101,9 +1101,9 @@ G1 E72.6449 F1200   ; Retract
 M0               ; Pause for syringe swap
 
 ; --- inner petals (Material B) ---
-G1 Z6.00 F600   ; Z-hop
+G1 Z9.00 F600   ; Z-hop
 G1 X110.438 Y111.593 F1200   ; Travel to inner petals start
-G1 Z5.00 F300   ; Lower to layer height
+G1 Z8.00 F300   ; Lower to layer height
 G1 E74.1449 F1200   ; Prime
 G1 X110.302 Y111.686 E74.1613 F300
 G1 X110.138 Y111.744 E74.1788 F300
@@ -1412,9 +1412,9 @@ G1 E89.0303 F1200   ; Retract
 M0               ; Pause for syringe swap
 
 ; --- center circle (Material C) ---
-G1 Z6.00 F600   ; Z-hop
+G1 Z9.00 F600   ; Z-hop
 G1 X104.891 Y101.040 F1200   ; Travel to center circle start
-G1 Z5.00 F300   ; Lower to layer height
+G1 Z8.00 F300   ; Lower to layer height
 G1 E90.5303 F1200   ; Prime
 G1 X104.830 Y101.294 E90.5565 F300
 G1 X104.755 Y101.545 E90.5827 F300
@@ -1539,7 +1539,7 @@ G1 X104.891 Y101.040 E93.6716 F300
 G1 E92.1716 F1200   ; Retract
 
 ; ╔══════════════════════════════════════════════╗
-; ║  LAYER 3/3 (Z=7.0mm, θ=24.0°)             ║
+; ║  LAYER 3/3 (Z=10.0mm, θ=24.0°)             ║
 ; ╚══════════════════════════════════════════════╝
 
 ; *** MATERIAL SWITCH → A ***
@@ -1547,9 +1547,9 @@ G1 E92.1716 F1200   ; Retract
 M0               ; Pause for syringe swap
 
 ; --- outer petals (Material A) ---
-G1 Z8.00 F600   ; Z-hop
+G1 Z11.00 F600   ; Z-hop
 G1 X123.752 Y110.575 F1200   ; Travel to outer petals start
-G1 Z7.00 F300   ; Lower to layer height
+G1 Z10.00 F300   ; Lower to layer height
 G1 E93.6716 F1200   ; Prime
 G1 X123.608 Y110.808 E93.6990 F300
 G1 X123.397 Y111.010 E93.7282 F300
@@ -1858,9 +1858,9 @@ G1 E119.4807 F1200   ; Retract
 M0               ; Pause for syringe swap
 
 ; --- inner petals (Material B) ---
-G1 Z8.00 F600   ; Z-hop
+G1 Z11.00 F600   ; Z-hop
 G1 X107.800 Y113.510 F1200   ; Travel to inner petals start
-G1 Z7.00 F300   ; Lower to layer height
+G1 Z10.00 F300   ; Lower to layer height
 G1 E120.9807 F1200   ; Prime
 G1 X107.648 Y113.572 E120.9971 F300
 G1 X107.474 Y113.595 E121.0146 F300
@@ -2169,9 +2169,9 @@ G1 E135.8661 F1200   ; Retract
 M0               ; Pause for syringe swap
 
 ; --- center circle (Material C) ---
-G1 Z8.00 F600   ; Z-hop
+G1 Z11.00 F600   ; Z-hop
 G1 X104.568 Y102.034 F1200   ; Travel to center circle start
-G1 Z7.00 F300   ; Lower to layer height
+G1 Z10.00 F300   ; Lower to layer height
 G1 E137.3661 F1200   ; Prime
 G1 X104.455 Y102.270 E137.3923 F300
 G1 X104.330 Y102.500 E137.4185 F300
@@ -2296,7 +2296,7 @@ G1 X104.568 Y102.034 E140.5074 F300
 G1 E139.0074 F1200   ; Retract
 
 ; === FINISH ===
-G1 Z27.0 F600      ; Raise nozzle clear
+G1 Z30.0 F600      ; Raise nozzle clear
 G1 X0 Y0 F1200   ; Move to home
 M84              ; Disable motors
 
