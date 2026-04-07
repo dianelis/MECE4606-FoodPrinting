@@ -41,7 +41,8 @@ Food Printing/
 │   └── di2256_square_v4.gcode
 ├── twisted_triangle/          # Part 2: Twisted pyramid (TBD)
 ├── multimaterial/             # Part 3: Multi-material prints (TBD)
-└── spirograph/                # Part 4: Spirograph patterns (TBD)
+├── spirograph/                # Part 4: Spirograph patterns
+└── final/                     # Final circular fort: outline + interior fill
 ```
 
 ---
