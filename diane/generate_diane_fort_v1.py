@@ -22,7 +22,7 @@ import sys
 
 NUM_LAYERS        = 3
 LAYER_HEIGHT      = 2.0
-FIRST_LAYER_Z     = 3.0
+FIRST_LAYER_Z     = 6.0        # match the raised plate height used by spirograph v3/v4
 
 CENTER_X          = 100.0
 CENTER_Y          = 100.0

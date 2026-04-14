@@ -3,7 +3,7 @@
 ;
 ; Layers: 3
 ; Layer height: 2.0mm
-; First layer Z: 3.0mm
+; First layer Z: 6.0mm
 ; Center: (100, 100)
 ; Fort radius: 28.0mm
 ; Battlements: 18
@@ -16,10 +16,10 @@ M82              ; Absolute extrusion mode
 G28              ; Home all axes
 
 
-; === LAYER 1/3 (Z=3.0mm, fort wall rotation=0.0°) ===
-G1 Z4.00 F600   ; Z-hop
+; === LAYER 1/3 (Z=6.0mm, fort wall rotation=0.0°) ===
+G1 Z7.00 F600   ; Z-hop
 G1 X128.000 Y100.000 F1200   ; Travel to fort outline
-G1 Z3.00 F300   ; Lower to layer height
+G1 Z6.00 F300   ; Lower to layer height
 G1 X124.620 Y104.341 E0.3576 F300
 G1 X126.311 Y109.577 E0.7152 F300
 G1 X121.651 Y112.500 E1.0728 F300
@@ -58,10 +58,10 @@ G1 X124.620 Y95.659 E12.5165 F300
 G1 X128.000 Y100.000 E12.8741 F300
 G1 E11.3741 F1200   ; Retract
 
-; === LAYER 2/3 (Z=5.0mm, fort wall rotation=10.0°) ===
-G1 Z6.00 F600   ; Z-hop
+; === LAYER 2/3 (Z=8.0mm, fort wall rotation=10.0°) ===
+G1 Z9.00 F600   ; Z-hop
 G1 X127.575 Y104.862 F1200   ; Travel to fort outline
-G1 Z5.00 F300   ; Lower to layer height
+G1 Z8.00 F300   ; Lower to layer height
 G1 E12.8741 F1200   ; Prime
 G1 X123.492 Y108.551 E13.2317 F300
 G1 X124.249 Y114.000 E13.5893 F300
@@ -101,10 +101,10 @@ G1 X125.000 Y100.000 E25.3905 F300
 G1 X127.575 Y104.862 E25.7481 F300
 G1 E24.2481 F1200   ; Retract
 
-; === LAYER 3/3 (Z=7.0mm, fort wall rotation=20.0°) ===
-G1 Z8.00 F600   ; Z-hop
+; === LAYER 3/3 (Z=10.0mm, fort wall rotation=20.0°) ===
+G1 Z11.00 F600   ; Z-hop
 G1 X126.311 Y109.577 F1200   ; Travel to fort outline
-G1 Z7.00 F300   ; Lower to layer height
+G1 Z10.00 F300   ; Lower to layer height
 G1 E25.7481 F1200   ; Prime
 G1 X121.651 Y112.500 E26.1058 F300
 G1 X121.449 Y117.998 E26.4634 F300
@@ -145,7 +145,7 @@ G1 X126.311 Y109.577 E38.6222 F300
 G1 E37.1222 F1200   ; Retract
 
 ; === FINISH ===
-G1 Z27.0 F600      ; Raise nozzle clear
+G1 Z30.0 F600      ; Raise nozzle clear
 G1 X0 Y0 F1200   ; Move to home
 M84              ; Disable motors
 
