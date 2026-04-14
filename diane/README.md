@@ -19,8 +19,8 @@ What gets generated:
 
 - `outline`: a crenellated circular wall that looks like a small fort
 - `fill`: concentric circular rings that stay inside the fort wall
-- `v2 outline`: a short fort base with a tall circular tower stacked above it
-- `v2 fill`: matching stacked fill rings for the base and tower
+- `v2 outline`: a pure circular tower sized to the spirograph width
+- `v2 fill`: matching stacked concentric fill rings for the tower
 
 Run:
 
@@ -34,6 +34,6 @@ Useful options:
 ```bash
 python3 diane/generate_diane_fort_v1.py --layers 4 --battlements 20
 python3 diane/generate_diane_fort_v1.py --radius 30 --ring-step 3.5
-python3 diane/generate_diane_fort_v2.py --tower-layers 20 --first-z 2
-python3 diane/generate_diane_fort_v2.py --base-layers 4 --tower-radius 14
+python3 diane/generate_diane_fort_v2.py --tower-layers 20 --first-z 1
+python3 diane/generate_diane_fort_v2.py --tower-radius 26 --ring-step 3.5
 ```
