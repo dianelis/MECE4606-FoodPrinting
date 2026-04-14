@@ -42,7 +42,7 @@ Food Printing/
 ├── twisted_triangle/          # Part 2: Twisted pyramid (TBD)
 ├── multimaterial/             # Part 3: Multi-material prints (TBD)
 ├── spirograph/                # Part 4: Spirograph patterns
-└── final/                     # Final circular fort: outline + interior fill
+└── diane/                     # Diane circular fort: outline + interior fill
 ```
 
 ---

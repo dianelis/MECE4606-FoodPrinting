@@ -1,4 +1,4 @@
-; Final Fort — Outline G-code
+; Diane Fort — Outline G-code
 ; Food Printing assignment
 ;
 ; Layers: 3

@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
 """
-generate_final_fort_v1.py — Generate a circular fort outline and interior fill.
+generate_diane_fort_v1.py — Generate a circular fort outline and interior fill.
 
 This script writes two separate G-code files:
   1. A crenellated circular perimeter ("fort wall")
   2. A concentric-ring fill that stays inside the fort
 
 Usage:
-    python generate_final_fort_v1.py
-    python generate_final_fort_v1.py --layers 4 --battlements 20
-    python generate_final_fort_v1.py --radius 30 --ring-step 3.5
+    python generate_diane_fort_v1.py
+    python generate_diane_fort_v1.py --layers 4 --battlements 20
+    python generate_diane_fort_v1.py --radius 30 --ring-step 3.5
 """
 
 import argparse
@@ -41,8 +41,8 @@ EXTRUSION_MULT    = 0.065
 RETRACT_DIST      = 1.5
 Z_HOP             = 1.0
 
-OUTLINE_FILE      = "di2256_final_fort_outline_v1.gcode"
-FILL_FILE         = "di2256_final_fort_fill_v1.gcode"
+OUTLINE_FILE      = "di2256_diane_fort_outline_v1.gcode"
+FILL_FILE         = "di2256_diane_fort_fill_v1.gcode"
 
 
 # ─── Geometry Helpers ────────────────────────────────────────────────────────
@@ -130,7 +130,7 @@ class FortGenerator:
 
     def _header(self, mode):
         lines = []
-        lines.append(f"; Final Fort — {mode} G-code")
+        lines.append(f"; Diane Fort — {mode} G-code")
         lines.append("; Food Printing assignment")
         lines.append(";")
         lines.append(f"; Layers: {self.num_layers}")
