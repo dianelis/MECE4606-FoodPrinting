@@ -42,6 +42,7 @@ POINTS_PER_RING   = 72         # polygon resolution per circle
 PRINT_SPEED       = 800        # mm/min — faster = thinner deposit, less blobbing
 TRAVEL_SPEED      = 1200
 EXTRUSION_MULT    = 0.025      # E mm per mm of XY travel (tuned thin)
+FIRST_RING_REPS   = 3          # repeat the innermost ring this many times to prime/push down
 RETRACT_DIST      = 1.5
 Z_HOP             = 1.0
 
@@ -85,6 +86,7 @@ class CupGenerator:
         extrusion_mult,
         retract,
         z_hop,
+        first_ring_reps,
     ):
         self.wall_layers      = wall_layers
         self.layer_height     = layer_height
@@ -100,6 +102,7 @@ class CupGenerator:
         self.e_mult           = extrusion_mult
         self.retract          = retract
         self.z_hop            = z_hop
+        self.first_ring_reps  = first_ring_reps
 
     # ── layer Z helpers ──
 
@@ -177,7 +180,8 @@ class CupGenerator:
         return e_total, True
 
     def _emit_concentric_fill(self, lines, z, e_total, retracted, max_radius, label_prefix):
-        """Print concentric rings from center outward (small → large radius)."""
+        """Print concentric rings from center outward (small → large radius).
+        The innermost ring is repeated self.first_ring_reps times to prime/push material down."""
         # Build list of radii from innermost to outermost
         radii = []
         r = self.ring_step
@@ -189,13 +193,17 @@ class CupGenerator:
             radii.append(max_radius)
 
         for ring_idx, radius in enumerate(radii):
+            reps = self.first_ring_reps if ring_idx == 0 else 1
             pts = circle_ring(self.cx, self.cy, radius, self.points_per_ring)
             if ring_idx % 2 == 1:          # alternate direction to reduce travel
                 pts = list(reversed(pts))
-            e_total, retracted = self._emit_path(
-                lines, pts, z, e_total, retracted,
-                f"{label_prefix} ring {ring_idx + 1} (r={radius:.1f}mm)"
-            )
+            for rep in range(reps):
+                rep_label = f"{label_prefix} ring {ring_idx + 1} (r={radius:.1f}mm)"
+                if reps > 1:
+                    rep_label += f" rep {rep + 1}/{reps}"
+                e_total, retracted = self._emit_path(
+                    lines, pts, z, e_total, retracted, rep_label
+                )
         return e_total, retracted
 
     # ── public generators ──
@@ -315,6 +323,7 @@ examples:
         travel_speed=TRAVEL_SPEED,
         extrusion_mult=EXTRUSION_MULT,
         retract=RETRACT_DIST,
+        first_ring_reps=FIRST_RING_REPS,
         z_hop=Z_HOP,
     )
 
