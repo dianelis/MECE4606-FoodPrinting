@@ -39,9 +39,9 @@ RING_STEP         = 4.0        # spacing between concentric fill rings (mm)
 INNER_MARGIN      = 3.0        # gap between outer wall and innermost fill ring (mm)
 POINTS_PER_RING   = 72         # polygon resolution per circle
 
-PRINT_SPEED       = 500        # mm/min — faster = thinner deposit
+PRINT_SPEED       = 800        # mm/min — faster = thinner deposit, less blobbing
 TRAVEL_SPEED      = 1200
-EXTRUSION_MULT    = 0.035      # E mm per mm of XY travel (tuned thin)
+EXTRUSION_MULT    = 0.025      # E mm per mm of XY travel (tuned thin)
 RETRACT_DIST      = 1.5
 Z_HOP             = 1.0
 
@@ -177,10 +177,18 @@ class CupGenerator:
         return e_total, True
 
     def _emit_concentric_fill(self, lines, z, e_total, retracted, max_radius, label_prefix):
-        """Print concentric rings from max_radius inward."""
-        ring_idx = 0
-        radius = max_radius
-        while radius >= self.ring_step:
+        """Print concentric rings from center outward (small → large radius)."""
+        # Build list of radii from innermost to outermost
+        radii = []
+        r = self.ring_step
+        while r <= max_radius:
+            radii.append(r)
+            r += self.ring_step
+        # If max_radius itself isn't hit exactly, add it as the outer wall ring
+        if not radii or radii[-1] < max_radius:
+            radii.append(max_radius)
+
+        for ring_idx, radius in enumerate(radii):
             pts = circle_ring(self.cx, self.cy, radius, self.points_per_ring)
             if ring_idx % 2 == 1:          # alternate direction to reduce travel
                 pts = list(reversed(pts))
@@ -188,8 +196,6 @@ class CupGenerator:
                 lines, pts, z, e_total, retracted,
                 f"{label_prefix} ring {ring_idx + 1} (r={radius:.1f}mm)"
             )
-            ring_idx += 1
-            radius -= self.ring_step
         return e_total, retracted
 
     # ── public generators ──
