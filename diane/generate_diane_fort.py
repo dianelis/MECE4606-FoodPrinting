@@ -26,8 +26,8 @@ import sys
 
 # ─── Defaults ────────────────────────────────────────────────────────────────
 
-WALL_LAYERS       = 6          # how many circular-wall layers (above the base)
-LAYER_HEIGHT      = 2.0        # mm per layer
+WALL_LAYERS       = 8          # how many circular-wall layers (above the base)
+LAYER_HEIGHT      = 1.0        # mm per wall layer (shorter steps)
 FIRST_LAYER_Z     = 5.5        # Z of the solid base layer (+3mm from previous 2.5)
 
 CENTER_X          = 100.0
@@ -35,7 +35,7 @@ CENTER_Y          = 100.0
 
 # Match spirograph v4 outer diameter of 52 mm.
 TOWER_RADIUS      = 26.0
-RING_STEP         = 4.0        # spacing between concentric fill rings (mm)
+RING_STEP         = 2.0        # spacing between concentric fill rings (mm) — tight, no gaps
 INNER_MARGIN      = 3.0        # gap between outer wall and innermost fill ring (mm)
 POINTS_PER_RING   = 72         # polygon resolution per circle
 
