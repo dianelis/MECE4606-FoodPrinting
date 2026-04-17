@@ -29,6 +29,7 @@ import sys
 WALL_LAYERS       = 8          # how many circular-wall layers (above the base)
 LAYER_HEIGHT      = 1.0        # mm per wall layer (shorter steps)
 FIRST_LAYER_Z     = 5.5        # Z of the solid base layer (+3mm from previous 2.5)
+FILL_Z_OFFSET     = 2.0        # shift the jam filling up by 2mm
 
 CENTER_X          = 100.0
 CENTER_Y          = 100.0
@@ -258,11 +259,12 @@ class CupGenerator:
         """
         max_r  = self.tower_radius - self.inner_margin
         wall_top_z = self._wall_z(self.wall_layers - 1)
-        safe_z_over_wall = wall_top_z + 10.0  # high enough to clear the printed wall
+        # We add 2.0mm to the fill Z as requested
+        safe_z_over_wall = wall_top_z + 10.0 + FILL_Z_OFFSET  
 
         lines = self._header(
             "Fill (second material)",
-            extra_notes=f"Fill layers inside cup building to Z={wall_top_z:.2f} mm"
+            extra_notes=f"Fill layers inside cup building to Z={wall_top_z + FILL_Z_OFFSET:.2f} mm (shifted up {FILL_Z_OFFSET}mm)"
         )
         e_total  = 0.0
         retracted = False
@@ -270,7 +272,7 @@ class CupGenerator:
         current_z = safe_z_over_wall
 
         for w in range(self.wall_layers):
-            fill_z = self._wall_z(w)
+            fill_z = self._wall_z(w) + FILL_Z_OFFSET
             current_z = fill_z
 
             lines.append("")
@@ -362,7 +364,7 @@ examples:
     print(f"  Base layer  Z={base_z:.2f} mm  (concentric fill, r={args.tower_radius:.1f} mm)")
     print(f"  Wall layers Z={base_z + args.layer_height:.2f}–{wall_top:.2f} mm  ({args.wall_layers} layers)")
     print(f"Wrote: {fill_path}")
-    print(f"  Fill layers Z={gen._wall_z(0):.2f}–{wall_top:.2f} mm  ({args.wall_layers} layers, r={args.tower_radius - args.inner_margin:.1f} mm)")
+    print(f"  Fill layers Z={gen._wall_z(0) + FILL_Z_OFFSET:.2f}–{wall_top + FILL_Z_OFFSET:.2f} mm  ({args.wall_layers} layers, r={args.tower_radius - args.inner_margin:.1f} mm)")
 
 
 if __name__ == "__main__":
