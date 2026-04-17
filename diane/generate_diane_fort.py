@@ -42,7 +42,7 @@ POINTS_PER_RING   = 72         # polygon resolution per circle
 PRINT_SPEED       = 800        # mm/min — faster = thinner deposit, less blobbing
 TRAVEL_SPEED      = 1200
 EXTRUSION_MULT    = 0.025      # E mm per mm of XY travel (tuned thin)
-FIRST_RING_REPS   = 3          # repeat the innermost ring this many times to prime/push down
+FIRST_RING_REPS   = 5          # repeat the innermost ring this many times to prime/push down
 RETRACT_DIST      = 1.5
 Z_HOP             = 1.0
 
