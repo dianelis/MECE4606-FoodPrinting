@@ -153,11 +153,15 @@ class CupGenerator:
         lines.append("")
         lines.append("; === END ===")
 
-    def _emit_path(self, lines, points, z, e_total, retracted, label):
+    def _emit_path(self, lines, points, z, e_total, retracted, label, initial_safe_z=None):
         """Travel to start of path, lower, prime if needed, extrude, retract."""
         x0, y0 = points[0]
-        lines.append(f"G1 Z{z + self.z_hop:.2f} F600   ; Z-hop")
-        lines.append(f"G1 X{x0:.3f} Y{y0:.3f} F{self.travel_speed}   ; Travel → {label}")
+        if initial_safe_z is not None:
+            lines.append(f"G1 Z{initial_safe_z:.2f} F600   ; Initial safe Z-hop over wall")
+            lines.append(f"G1 X{x0:.3f} Y{y0:.3f} F{self.travel_speed}   ; Safe travel → {label}")
+        else:
+            lines.append(f"G1 Z{z + self.z_hop:.2f} F600   ; Z-hop")
+            lines.append(f"G1 X{x0:.3f} Y{y0:.3f} F{self.travel_speed}   ; Travel → {label}")
         lines.append(f"G1 Z{z:.2f} F300   ; Lower to Z")
 
         if retracted:
@@ -179,7 +183,7 @@ class CupGenerator:
         lines.append(f"G1 E{e_total:.4f} F{self.travel_speed}   ; Retract")
         return e_total, True
 
-    def _emit_concentric_fill(self, lines, z, e_total, retracted, max_radius, label_prefix):
+    def _emit_concentric_fill(self, lines, z, e_total, retracted, max_radius, label_prefix, safe_z=None):
         """Print concentric rings from center outward (small → large radius).
         The innermost ring is repeated self.first_ring_reps times to prime/push material down."""
         # Build list of radii from innermost to outermost
@@ -201,9 +205,11 @@ class CupGenerator:
                 rep_label = f"{label_prefix} ring {ring_idx + 1} (r={radius:.1f}mm)"
                 if reps > 1:
                     rep_label += f" rep {rep + 1}/{reps}"
+
                 e_total, retracted = self._emit_path(
-                    lines, pts, z, e_total, retracted, rep_label
+                    lines, pts, z, e_total, retracted, rep_label, initial_safe_z=safe_z
                 )
+                safe_z = None  # Only use safe_z for the very first approach
         return e_total, retracted
 
     # ── public generators ──
@@ -246,28 +252,41 @@ class CupGenerator:
 
     def generate_fill(self):
         """
-        Single layer of concentric rings inside the cup walls.
+        Multiple layers of concentric rings inside the cup walls, 
+        building up piece by piece to the same height as the fort.
         Print this with a second material (e.g. jam) after the outline.
-        The fill Z is one layer above the base so it sits inside the cup.
         """
-        fill_z = self._wall_z(0)   # same Z as the first wall layer
         max_r  = self.tower_radius - self.inner_margin
+        wall_top_z = self._wall_z(self.wall_layers - 1)
+        safe_z_over_wall = wall_top_z + 10.0  # high enough to clear the printed wall
 
         lines = self._header(
             "Fill (second material)",
-            extra_notes=f"Single fill layer at Z={fill_z:.2f} mm inside the cup"
+            extra_notes=f"Fill layers inside cup building to Z={wall_top_z:.2f} mm"
         )
         e_total  = 0.0
         retracted = False
 
-        lines.append(f"; === FILL LAYER — INSIDE CUP  (Z={fill_z:.2f} mm) ===")
-        e_total, retracted = self._emit_concentric_fill(
-            lines, fill_z, e_total, retracted,
-            max_radius=max_r,
-            label_prefix="fill"
-        )
+        current_z = safe_z_over_wall
 
-        self._finish(lines, fill_z)
+        for w in range(self.wall_layers):
+            fill_z = self._wall_z(w)
+            current_z = fill_z
+
+            lines.append("")
+            lines.append(f"; === FILL LAYER {w+1}/{self.wall_layers} — INSIDE CUP  (Z={fill_z:.2f} mm) ===")
+            
+            # The very first move from home must jump over the built wall
+            layer_safe_z = safe_z_over_wall if w == 0 else None
+
+            e_total, retracted = self._emit_concentric_fill(
+                lines, fill_z, e_total, retracted,
+                max_radius=max_r,
+                label_prefix=f"fill L{w+1}",
+                safe_z=layer_safe_z
+            )
+
+        self._finish(lines, current_z)
         return "\n".join(lines) + "\n"
 
 
@@ -343,7 +362,7 @@ examples:
     print(f"  Base layer  Z={base_z:.2f} mm  (concentric fill, r={args.tower_radius:.1f} mm)")
     print(f"  Wall layers Z={base_z + args.layer_height:.2f}–{wall_top:.2f} mm  ({args.wall_layers} layers)")
     print(f"Wrote: {fill_path}")
-    print(f"  Fill layer  Z={gen._wall_z(0):.2f} mm  (inside cup, r={args.tower_radius - args.inner_margin:.1f} mm)")
+    print(f"  Fill layers Z={gen._wall_z(0):.2f}–{wall_top:.2f} mm  ({args.wall_layers} layers, r={args.tower_radius - args.inner_margin:.1f} mm)")
 
 
 if __name__ == "__main__":
