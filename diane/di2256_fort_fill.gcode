@@ -7,13 +7,13 @@
 ;
 ; Wall layers: 6
 ; Layer height: 2.0 mm
-; Base Z: 2.50 mm
-; Wall top Z: 14.50 mm
+; Base Z: 5.50 mm
+; Wall top Z: 17.50 mm
 ; Radius: 26.0 mm  (diameter 52.0 mm)
 ; Center: (100, 100)
 ; Print speed: 800 mm/min
 ; Extrusion mult: 0.025
-; Single fill layer at Z=4.50 mm inside the cup
+; Single fill layer at Z=7.50 mm inside the cup
 
 ; === INITIALIZATION ===
 G21              ; Set units to millimeters
@@ -21,10 +21,10 @@ G90              ; Absolute positioning
 M82              ; Absolute extrusion mode
 G28              ; Home all axes
 
-; === FILL LAYER — INSIDE CUP  (Z=4.50 mm) ===
-G1 Z5.50 F600   ; Z-hop
+; === FILL LAYER — INSIDE CUP  (Z=7.50 mm) ===
+G1 Z8.50 F600   ; Z-hop
 G1 X104.000 Y100.000 F1200   ; Travel → fill ring 1 (r=4.0mm)
-G1 Z4.50 F300   ; Lower to Z
+G1 Z7.50 F300   ; Lower to Z
 G1 X103.985 Y100.349 E0.0087 F800
 G1 X103.939 Y100.695 E0.0174 F800
 G1 X103.864 Y101.035 E0.0262 F800
@@ -98,9 +98,9 @@ G1 X103.939 Y99.305 E0.6107 F800
 G1 X103.985 Y99.651 E0.6194 F800
 G1 X104.000 Y100.000 E0.6281 F800
 G1 E-0.8719 F1200   ; Retract
-G1 Z5.50 F600   ; Z-hop
+G1 Z8.50 F600   ; Z-hop
 G1 X108.000 Y100.000 F1200   ; Travel → fill ring 2 (r=8.0mm)
-G1 Z4.50 F300   ; Lower to Z
+G1 Z7.50 F300   ; Lower to Z
 G1 E0.6281 F1200   ; Prime
 G1 X107.970 Y99.303 E0.6456 F800
 G1 X107.878 Y98.611 E0.6630 F800
@@ -175,9 +175,9 @@ G1 X107.878 Y101.389 E1.8495 F800
 G1 X107.970 Y100.697 E1.8669 F800
 G1 X108.000 Y100.000 E1.8844 F800
 G1 E0.3844 F1200   ; Retract
-G1 Z5.50 F600   ; Z-hop
+G1 Z8.50 F600   ; Z-hop
 G1 X112.000 Y100.000 F1200   ; Travel → fill ring 3 (r=12.0mm)
-G1 Z4.50 F300   ; Lower to Z
+G1 Z7.50 F300   ; Lower to Z
 G1 E1.8844 F1200   ; Prime
 G1 X111.954 Y101.046 E1.9105 F800
 G1 X111.818 Y102.084 E1.9367 F800
@@ -252,9 +252,9 @@ G1 X111.818 Y97.916 E3.7164 F800
 G1 X111.954 Y98.954 E3.7425 F800
 G1 X112.000 Y100.000 E3.7687 F800
 G1 E2.2687 F1200   ; Retract
-G1 Z5.50 F600   ; Z-hop
+G1 Z8.50 F600   ; Z-hop
 G1 X116.000 Y100.000 F1200   ; Travel → fill ring 4 (r=16.0mm)
-G1 Z4.50 F300   ; Lower to Z
+G1 Z7.50 F300   ; Lower to Z
 G1 E3.7687 F1200   ; Prime
 G1 X115.939 Y98.606 E3.8036 F800
 G1 X115.757 Y97.222 E3.8385 F800
@@ -329,9 +329,9 @@ G1 X115.757 Y102.778 E6.2114 F800
 G1 X115.939 Y101.394 E6.2463 F800
 G1 X116.000 Y100.000 E6.2812 F800
 G1 E4.7812 F1200   ; Retract
-G1 Z5.50 F600   ; Z-hop
+G1 Z8.50 F600   ; Z-hop
 G1 X120.000 Y100.000 F1200   ; Travel → fill ring 5 (r=20.0mm)
-G1 Z4.50 F300   ; Lower to Z
+G1 Z7.50 F300   ; Lower to Z
 G1 E6.2812 F1200   ; Prime
 G1 X119.924 Y101.743 E6.3248 F800
 G1 X119.696 Y103.473 E6.3684 F800
@@ -406,9 +406,9 @@ G1 X119.696 Y96.527 E9.3345 F800
 G1 X119.924 Y98.257 E9.3782 F800
 G1 X120.000 Y100.000 E9.4218 F800
 G1 E7.9218 F1200   ; Retract
-G1 Z5.50 F600   ; Z-hop
+G1 Z8.50 F600   ; Z-hop
 G1 X123.000 Y100.000 F1200   ; Travel → fill ring 6 (r=23.0mm)
-G1 Z4.50 F300   ; Lower to Z
+G1 Z7.50 F300   ; Lower to Z
 G1 E9.4218 F1200   ; Prime
 G1 X122.912 Y97.995 E9.4719 F800
 G1 X122.651 Y96.006 E9.5221 F800
@@ -485,7 +485,7 @@ G1 X123.000 Y100.000 E13.0335 F800
 G1 E11.5335 F1200   ; Retract
 
 ; === FINISH ===
-G1 Z24.5 F600      ; Raise nozzle clear
+G1 Z27.5 F600      ; Raise nozzle clear
 G1 X0 Y0 F1200   ; Move to home position
 M84              ; Disable motors
 

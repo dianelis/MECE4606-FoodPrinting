@@ -28,7 +28,7 @@ import sys
 
 WALL_LAYERS       = 6          # how many circular-wall layers (above the base)
 LAYER_HEIGHT      = 2.0        # mm per layer
-FIRST_LAYER_Z     = 2.5        # Z of the solid base layer (match twisted triangle ≈ 3.0)
+FIRST_LAYER_Z     = 5.5        # Z of the solid base layer (+3mm from previous 2.5)
 
 CENTER_X          = 100.0
 CENTER_Y          = 100.0
