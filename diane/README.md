@@ -1,39 +1,35 @@
-# Diane Fort
+# Diane Prints
 
-This folder contains a circular "fort" pattern built in the same spirit as the
-`spirograph` generators: Python code computes `x, y, z` paths and emits
-food-printing G-code.
+This directory groups Diane's multi-ingredient food-printing experiments.
+Each subfolder contains a Python generator plus the emitted outline/fill G-code
+for a two-material print.
 
-Files:
+## Layout
 
-- `generate_diane_fort_v1.py`
-  Creates two separate toolpaths:
-  - `di2256_diane_fort_outline_v1.gcode`
-  - `di2256_diane_fort_fill_v1.gcode`
-- `generate_diane_fort_v2.py`
-  Creates two separate toolpaths:
-  - `di2256_diane_fort_outline_v2.gcode`
-  - `di2256_diane_fort_fill_v2.gcode`
+- `multi_ingredient_fort/`
+  - `generate_diane_fort.py`
+  - `di2256_fort_outline.gcode`
+  - `di2256_fort_fill.gcode`
+- `multi_ingredient_spirograph/`
+  - `generate_multi_ingredient_spirograph.py`
+  - `di2256_spirograph_outline.gcode`
+  - `di2256_spirograph_fill.gcode`
 
-What gets generated:
+## What Each Generator Produces
 
-- `outline`: a crenellated circular wall that looks like a small fort
-- `fill`: concentric circular rings that stay inside the fort wall
-- `v2 outline`: a pure circular tower sized to the spirograph width
-- `v2 fill`: matching stacked concentric fill rings for the tower
+- `outline`: the supporting structure printed with the first material
+- `fill`: the interior printed with the second material
 
-Run:
+For both designs, the workflow is the same:
 
-```bash
-python3 diane/generate_diane_fort_v1.py
-python3 diane/generate_diane_fort_v2.py
-```
+- layer 1 builds a solid base
+- later layers trace the outer wall / silhouette
+- the fill file stacks interior passes at the same height range, shifted upward
+  to clear the outer wall during the material switch
 
-Useful options:
+## Run
 
 ```bash
-python3 diane/generate_diane_fort_v1.py --layers 4 --battlements 20
-python3 diane/generate_diane_fort_v1.py --radius 30 --ring-step 3.5
-python3 diane/generate_diane_fort_v2.py --tower-layers 20 --first-z 1
-python3 diane/generate_diane_fort_v2.py --tower-radius 26 --ring-step 3.5
+python3 diane/multi_ingredient_fort/generate_diane_fort.py
+python3 diane/multi_ingredient_spirograph/generate_multi_ingredient_spirograph.py
 ```
