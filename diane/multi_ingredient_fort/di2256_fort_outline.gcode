@@ -22,8 +22,8 @@ M82              ; Absolute extrusion mode
 G28              ; Home all axes
 
 ; === LAYER 1 — SOLID BASE  (Z=5.50 mm) ===
-G1 Z6.50 F600   ; Z-hop
-G1 X102.000 Y100.000 F1200   ; Travel → base ring 1 (r=2.0mm) rep 1/5
+G1 Z25.50 F600   ; Initial safe Z-hop over wall
+G1 X102.000 Y100.000 F1200   ; Safe travel → base ring 1 (r=2.0mm) rep 1/5
 G1 Z5.50 F300   ; Lower to Z
 G1 X101.992 Y100.174 E0.0044 F800
 G1 X101.970 Y100.347 E0.0087 F800

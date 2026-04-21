@@ -234,7 +234,8 @@ class CupGenerator:
         e_total, retracted = self._emit_concentric_fill(
             lines, z, e_total, retracted,
             max_radius=self.tower_radius,   # fill the entire circle
-            label_prefix="base"
+            label_prefix="base",
+            safe_z=z + 20.0
         )
 
         # ── LAYERS 2+: circular wall ─────────────────────────────────────────
