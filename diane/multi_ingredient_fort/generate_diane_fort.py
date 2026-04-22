@@ -30,6 +30,7 @@ WALL_LAYERS       = 8          # how many circular-wall layers (above the base)
 LAYER_HEIGHT      = 1.0        # mm per wall layer (shorter steps)
 FIRST_LAYER_Z     = 5.5        # Z of the solid base layer (+3mm from previous 2.5)
 FILL_Z_OFFSET     = 2.0        # shift the jam filling up by 2mm
+TOPPER_LAYERS     = 3          # spirograph layers stacked on top of the fill
 
 CENTER_X          = 100.0
 CENTER_Y          = 100.0
@@ -39,6 +40,10 @@ TOWER_RADIUS      = 26.0
 RING_STEP         = 2.0        # spacing between concentric fill rings (mm) — tight, no gaps
 INNER_MARGIN      = 3.0        # gap between outer wall and innermost fill ring (mm)
 POINTS_PER_RING   = 72         # polygon resolution per circle
+SPIROGRAPH_R      = 18.0       # fixed circle radius
+SPIROGRAPH_r      = 3.0        # rolling circle radius
+SPIROGRAPH_d      = 5.0        # pen offset
+SPIROGRAPH_POINTS_PER_REV = 360
 
 PRINT_SPEED       = 800        # mm/min — faster = thinner deposit, less blobbing
 TRAVEL_SPEED      = 1200
@@ -49,6 +54,7 @@ Z_HOP             = 1.0
 
 OUTLINE_FILE      = "di2256_fort_outline.gcode"
 FILL_FILE         = "di2256_fort_fill.gcode"
+TOPPER_FILE       = "di2256_fort_spirograph_topper.gcode"
 
 
 # ─── Geometry Helpers ────────────────────────────────────────────────────────
@@ -65,6 +71,25 @@ def circle_ring(cx, cy, radius, points_per_ring):
 
 def dist(p1, p2):
     return math.hypot(p2[0] - p1[0], p2[1] - p1[1])
+
+
+def compute_num_revolutions(R, r):
+    """Number of full revolutions of t needed to close the epitrochoid."""
+    g = math.gcd(int(R), int(r))
+    return int(r) // g
+
+
+def epitrochoid_points(R, r, d, num_revs, total_points, cx, cy):
+    """Return a closed epitrochoid translated to (cx, cy)."""
+    pts = []
+    s = R + r
+    ratio = s / r
+    for i in range(total_points + 1):
+        t = 2.0 * math.pi * num_revs * i / total_points
+        x = cx + s * math.cos(t) - d * math.cos(ratio * t)
+        y = cy + s * math.sin(t) - d * math.sin(ratio * t)
+        pts.append((x, y))
+    return pts
 
 
 # ─── G-code Generator ────────────────────────────────────────────────────────
@@ -88,6 +113,11 @@ class CupGenerator:
         retract,
         z_hop,
         first_ring_reps,
+        topper_layers,
+        spirograph_R,
+        spirograph_r,
+        spirograph_d,
+        spirograph_points_per_rev,
     ):
         self.wall_layers      = wall_layers
         self.layer_height     = layer_height
@@ -104,6 +134,13 @@ class CupGenerator:
         self.retract          = retract
         self.z_hop            = z_hop
         self.first_ring_reps  = first_ring_reps
+        self.topper_layers    = topper_layers
+        self.spirograph_R     = spirograph_R
+        self.spirograph_r     = spirograph_r
+        self.spirograph_d     = spirograph_d
+        self.spirograph_points_per_rev = spirograph_points_per_rev
+        self.spirograph_num_revs = compute_num_revolutions(spirograph_R, spirograph_r)
+        self.spirograph_total_points = self.spirograph_num_revs * spirograph_points_per_rev
 
     # ── layer Z helpers ──
 
@@ -114,9 +151,18 @@ class CupGenerator:
         """wall_idx 0 = first wall layer directly above the base."""
         return self.first_z + (wall_idx + 1) * self.layer_height
 
+    def _fill_top_z(self):
+        if self.wall_layers:
+            return self._wall_z(self.wall_layers - 1) + FILL_Z_OFFSET
+        return self._base_z() + FILL_Z_OFFSET
+
+    def _topper_z(self, topper_idx):
+        """topper_idx 0 = first spirograph layer above the fill."""
+        return self._fill_top_z() + (topper_idx + 1) * self.layer_height
+
     # ── low-level emitters ──
 
-    def _header(self, mode, extra_notes=""):
+    def _header(self, mode, extra_notes="", home_axes=True):
         lines = []
         lines.append(f"; Diane Fort — Cup {mode} G-code")
         lines.append("; Food Printing assignment")
@@ -141,7 +187,10 @@ class CupGenerator:
         lines.append("G21              ; Set units to millimeters")
         lines.append("G90              ; Absolute positioning")
         lines.append("M82              ; Absolute extrusion mode")
-        lines.append("G28              ; Home all axes")
+        if home_axes:
+            lines.append("G28              ; Home all axes")
+        else:
+            lines.append("; Continuation file: keep printer coordinates from the completed fort print")
         lines.append("")
         return lines
 
@@ -292,6 +341,55 @@ class CupGenerator:
         self._finish(lines, current_z)
         return "\n".join(lines) + "\n"
 
+    def generate_spirograph_topper(self):
+        """
+        Print a 3-layer spirograph on top of the completed fort fill.
+        This file continues from the fort's final fill height instead of
+        starting back at the original base layer.
+        """
+        lines = self._header(
+            "Spirograph Topper",
+            extra_notes=(
+                f"Continuation after fort fill: first topper layer starts at Z={self._topper_z(0):.2f} mm "
+                f"(fill ended at Z={self._fill_top_z():.2f} mm)"
+            ),
+            home_axes=False,
+        )
+        e_total = 0.0
+        retracted = False
+        current_z = self._topper_z(0)
+        safe_z = self._fill_top_z() + 10.0
+        pts = epitrochoid_points(
+            self.spirograph_R,
+            self.spirograph_r,
+            self.spirograph_d,
+            self.spirograph_num_revs,
+            self.spirograph_total_points,
+            self.cx,
+            self.cy,
+        )
+
+        for t in range(self.topper_layers):
+            z = self._topper_z(t)
+            current_z = z
+            lines.append("")
+            lines.append(
+                f"; === TOPPER LAYER {t + 1}/{self.topper_layers} — SPIROGRAPH  (Z={z:.2f} mm) ==="
+            )
+            layer_safe_z = safe_z if t == 0 else None
+            e_total, retracted = self._emit_path(
+                lines,
+                pts,
+                z,
+                e_total,
+                retracted,
+                "spirograph topper",
+                initial_safe_z=layer_safe_z,
+            )
+
+        self._finish(lines, current_z)
+        return "\n".join(lines) + "\n"
+
 
 # ─── CLI ─────────────────────────────────────────────────────────────────────
 
@@ -347,11 +445,17 @@ examples:
         retract=RETRACT_DIST,
         first_ring_reps=FIRST_RING_REPS,
         z_hop=Z_HOP,
+        topper_layers=TOPPER_LAYERS,
+        spirograph_R=SPIROGRAPH_R,
+        spirograph_r=SPIROGRAPH_r,
+        spirograph_d=SPIROGRAPH_d,
+        spirograph_points_per_rev=SPIROGRAPH_POINTS_PER_REV,
     )
 
     out_dir      = os.path.dirname(os.path.abspath(__file__))
     outline_path = os.path.join(out_dir, OUTLINE_FILE)
     fill_path    = os.path.join(out_dir, FILL_FILE)
+    topper_path  = os.path.join(out_dir, TOPPER_FILE)
 
     with open(outline_path, "w", encoding="utf-8") as fh:
         fh.write(gen.generate_outline())
@@ -359,13 +463,22 @@ examples:
     with open(fill_path, "w", encoding="utf-8") as fh:
         fh.write(gen.generate_fill())
 
+    with open(topper_path, "w", encoding="utf-8") as fh:
+        fh.write(gen.generate_spirograph_topper())
+
     base_z   = gen._base_z()
     wall_top = gen._wall_z(args.wall_layers - 1) if args.wall_layers else base_z
+    fill_top = gen._fill_top_z()
     print(f"Wrote: {outline_path}")
     print(f"  Base layer  Z={base_z:.2f} mm  (concentric fill, r={args.tower_radius:.1f} mm)")
     print(f"  Wall layers Z={base_z + args.layer_height:.2f}–{wall_top:.2f} mm  ({args.wall_layers} layers)")
     print(f"Wrote: {fill_path}")
     print(f"  Fill layers Z={gen._wall_z(0) + FILL_Z_OFFSET:.2f}–{wall_top + FILL_Z_OFFSET:.2f} mm  ({args.wall_layers} layers, r={args.tower_radius - args.inner_margin:.1f} mm)")
+    print(f"Wrote: {topper_path}")
+    print(
+        f"  Topper layers Z={gen._topper_z(0):.2f}–{gen._topper_z(gen.topper_layers - 1):.2f} mm  "
+        f"({gen.topper_layers} layers, continuing above fill top at Z={fill_top:.2f} mm)"
+    )
 
 
 if __name__ == "__main__":
