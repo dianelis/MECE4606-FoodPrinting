@@ -46,6 +46,7 @@ SPIROGRAPH_d      = 5.0        # pen offset
 SPIROGRAPH_POINTS_PER_REV = 360
 TOPPER_SCALE      = 0.35       # print the topper smaller than the original spirograph size
 TOPPER_OUTER_DIAMETER_DELTA = 10.0  # add an outer spirograph about 10 mm larger in diameter
+TOPPER_RING_COUNT = 3         # inner spirograph plus two outer spirograph rings
 
 PRINT_SPEED       = 800        # mm/min — faster = thinner deposit, less blobbing
 TRAVEL_SPEED      = 1200
@@ -362,7 +363,7 @@ class CupGenerator:
             extra_notes=(
                 f"Continuation after fort fill: first topper layer starts at Z={self._topper_z(0):.2f} mm "
                 f"(fill ended at Z={self._fill_top_z():.2f} mm, inner scale={self.topper_scale:.2f}x, "
-                f"outer ring is {TOPPER_OUTER_DIAMETER_DELTA:.1f} mm larger in diameter)"
+                f"{TOPPER_RING_COUNT - 1} outer rings spaced by {TOPPER_OUTER_DIAMETER_DELTA:.1f} mm in diameter)"
             ),
             home_axes=False,
         )
@@ -370,22 +371,23 @@ class CupGenerator:
         retracted = False
         current_z = self._topper_z(0)
         safe_z = self._fill_top_z() + 10.0
-        inner_pts = scale_points(
-            epitrochoid_points(
-                self.spirograph_R,
-                self.spirograph_r,
-                self.spirograph_d,
-                self.spirograph_num_revs,
-                self.spirograph_total_points,
-                self.cx,
-                self.cy,
-            ),
+        base_pts = epitrochoid_points(
+            self.spirograph_R,
+            self.spirograph_r,
+            self.spirograph_d,
+            self.spirograph_num_revs,
+            self.spirograph_total_points,
             self.cx,
             self.cy,
-            self.topper_scale,
         )
-        outer_scale = self.topper_scale + (TOPPER_OUTER_DIAMETER_DELTA / (2.0 * self.spirograph_outer_radius))
-        outer_pts = scale_points(inner_pts, self.cx, self.cy, outer_scale / self.topper_scale)
+        scale_step = TOPPER_OUTER_DIAMETER_DELTA / (2.0 * self.spirograph_outer_radius)
+        topper_paths = []
+        for ring_idx in range(TOPPER_RING_COUNT):
+            ring_scale = self.topper_scale + ring_idx * scale_step
+            ring_label = "inner spirograph topper" if ring_idx == 0 else f"outer spirograph topper {ring_idx}"
+            topper_paths.append(
+                (ring_label, scale_points(base_pts, self.cx, self.cy, ring_scale))
+            )
 
         for t in range(self.topper_layers):
             z = self._topper_z(t)
@@ -395,24 +397,16 @@ class CupGenerator:
                 f"; === TOPPER LAYER {t + 1}/{self.topper_layers} — SPIROGRAPH  (Z={z:.2f} mm) ==="
             )
             layer_safe_z = safe_z if t == 0 else None
-            e_total, retracted = self._emit_path(
-                lines,
-                inner_pts,
-                z,
-                e_total,
-                retracted,
-                "inner spirograph topper",
-                initial_safe_z=layer_safe_z,
-            )
-            e_total, retracted = self._emit_path(
-                lines,
-                outer_pts,
-                z,
-                e_total,
-                retracted,
-                "outer spirograph topper",
-                initial_safe_z=layer_safe_z,
-            )
+            for ring_idx, (label, pts) in enumerate(topper_paths):
+                e_total, retracted = self._emit_path(
+                    lines,
+                    pts,
+                    z,
+                    e_total,
+                    retracted,
+                    label,
+                    initial_safe_z=layer_safe_z if ring_idx == 0 else None,
+                )
 
         self._finish(lines, current_z)
         return "\n".join(lines) + "\n"
