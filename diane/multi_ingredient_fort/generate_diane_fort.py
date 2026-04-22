@@ -44,6 +44,7 @@ SPIROGRAPH_R      = 18.0       # fixed circle radius
 SPIROGRAPH_r      = 3.0        # rolling circle radius
 SPIROGRAPH_d      = 5.0        # pen offset
 SPIROGRAPH_POINTS_PER_REV = 360
+TOPPER_SCALE      = 0.35       # print the topper smaller than the original spirograph size
 
 PRINT_SPEED       = 800        # mm/min — faster = thinner deposit, less blobbing
 TRAVEL_SPEED      = 1200
@@ -92,6 +93,11 @@ def epitrochoid_points(R, r, d, num_revs, total_points, cx, cy):
     return pts
 
 
+def scale_points(points, cx, cy, scale):
+    """Scale a path about the print center."""
+    return [(cx + (x - cx) * scale, cy + (y - cy) * scale) for x, y in points]
+
+
 # ─── G-code Generator ────────────────────────────────────────────────────────
 
 class CupGenerator:
@@ -118,6 +124,7 @@ class CupGenerator:
         spirograph_r,
         spirograph_d,
         spirograph_points_per_rev,
+        topper_scale,
     ):
         self.wall_layers      = wall_layers
         self.layer_height     = layer_height
@@ -139,6 +146,7 @@ class CupGenerator:
         self.spirograph_r     = spirograph_r
         self.spirograph_d     = spirograph_d
         self.spirograph_points_per_rev = spirograph_points_per_rev
+        self.topper_scale     = topper_scale
         self.spirograph_num_revs = compute_num_revolutions(spirograph_R, spirograph_r)
         self.spirograph_total_points = self.spirograph_num_revs * spirograph_points_per_rev
 
@@ -351,7 +359,7 @@ class CupGenerator:
             "Spirograph Topper",
             extra_notes=(
                 f"Continuation after fort fill: first topper layer starts at Z={self._topper_z(0):.2f} mm "
-                f"(fill ended at Z={self._fill_top_z():.2f} mm)"
+                f"(fill ended at Z={self._fill_top_z():.2f} mm, topper scale={self.topper_scale:.2f}x)"
             ),
             home_axes=False,
         )
@@ -359,14 +367,19 @@ class CupGenerator:
         retracted = False
         current_z = self._topper_z(0)
         safe_z = self._fill_top_z() + 10.0
-        pts = epitrochoid_points(
-            self.spirograph_R,
-            self.spirograph_r,
-            self.spirograph_d,
-            self.spirograph_num_revs,
-            self.spirograph_total_points,
+        pts = scale_points(
+            epitrochoid_points(
+                self.spirograph_R,
+                self.spirograph_r,
+                self.spirograph_d,
+                self.spirograph_num_revs,
+                self.spirograph_total_points,
+                self.cx,
+                self.cy,
+            ),
             self.cx,
             self.cy,
+            self.topper_scale,
         )
 
         for t in range(self.topper_layers):
@@ -450,6 +463,7 @@ examples:
         spirograph_r=SPIROGRAPH_r,
         spirograph_d=SPIROGRAPH_d,
         spirograph_points_per_rev=SPIROGRAPH_POINTS_PER_REV,
+        topper_scale=TOPPER_SCALE,
     )
 
     out_dir      = os.path.dirname(os.path.abspath(__file__))
